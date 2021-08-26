@@ -1,43 +1,17 @@
 import './App.css';
 import React from 'react';
+import Api from './components/Api'
 
-class App extends React.Component {
-  constructor(props) {
-   super(props)
-   this.state = {
-     APIresponse: ''
-    }
-  }
 
-  fetchApi = () => {
-     fetch('http://localhost:3001/testApi')
-    .then(response =>  {
-      const data = response.json()
-      return data
-  }) 
 
-  .then(data =>  {
-    console.log(data)
-      this.setState({
-          APIresponse: data
-      })   
-  })             
-}
-
-async componentDidMount() {
-  this.fetchApi()
-  }
-
-  render() {
+function App () {
+ 
     return (
-      <div>
-        <h1>
-          {this.state.APIresponse}
-        </h1>
-      </div>
+     <Api>     
+     </Api>
     )
   }
 
-}
+
 
 export default App;
