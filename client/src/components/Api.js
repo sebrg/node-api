@@ -49,12 +49,12 @@ handleChange = (event) => {
 }
 
 handleSubmit = (event) =>  {
-  this.makeReq('http://localhost:3001/testApi', 'POST', this.state.input)
+  this.makeReq('http://localhost:3001/api', 'POST', this.state.input)
   event.preventDefault();
 }
 
 async componentDidMount() {
-    this.makeReq('http://localhost:3001/testApi', 'GET')
+    this.makeReq('http://localhost:3001/api', 'GET')
 
 }
    
