@@ -3,6 +3,7 @@ const express = require('express')
 let router = express.Router()
 
 
+
 router.post('/', (req, res) =>  {
     let rawData = fs.readFileSync("products.json")
     let products = JSON.parse(rawData)
