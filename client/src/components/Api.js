@@ -50,7 +50,13 @@ handleChange = (event) => {
 }
 
 handleSubmit = (event) =>  {
-  this.makeReq('http://localhost:3001/api', 'POST', this.state.input)
+  if(this.state.input.productname === '' || this.state.input.price === '') {
+    alert('Product name and price are required to add a product.')
+  }
+  else {
+
+    this.makeReq('http://localhost:3001/api', 'POST', this.state.input)
+  }
   event.preventDefault();
 }
 
@@ -72,10 +78,10 @@ async componentDidMount() {
               Node
           </div>
 
-            <div>
-              <input name='productname' type='text' value={this.state.input.productname} onChange={this.handleChange} placeholder='product-name'></input>
-              <input name='price' type='text' value={this.state.input.price} onChange={this.handleChange} placeholder='price'></input>
-              <button type='submit' onClick={this.handleSubmit}>Add product</button>
+            <div style={divBox}>
+              <input style={inputs} name='productname' type='text' value={this.state.input.productname} onChange={this.handleChange} placeholder='product-name'></input>
+              <input style={inputs} name='price' type='number' value={this.state.input.price} onChange={this.handleChange} placeholder='price'></input>
+              <button style={buttonstyle} type='submit' onClick={this.handleSubmit}>Add Product</button>
             </div>
 
           <div style={divBox}>
@@ -83,7 +89,8 @@ async componentDidMount() {
               <div style={proCard}>
               <h1> {product.productname} </h1>
               <h3> {product.price} kr </h3>
-              <button onClick={() => this.deleteProduct(product.productname)} >Delete Product</button>
+              <button style={buttonstyle2} >Update Product</button>
+              <button style={buttonstyle2} onClick={() => this.deleteProduct(product.productname)} >Delete Product</button>
           </div>
             ))}
         </div>
@@ -98,7 +105,7 @@ export default Api;
 const header = {
     width: '100vw', 
     height: '10vh',
-    backgroundColor: 'green',
+    backgroundColor: 'lightblue',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -115,13 +122,14 @@ const bcol = {
 }
 
 const proCard = {
-    backgroundColor: 'Grey',
+    backgroundColor: 'lightblue',
     border: '1px',
     borderRadius: '10px',
     width: '20vw',
     height: '40vh',
     margin: '10px',
-    color: 'white'
+    color: 'white',
+    
     
 }
 
@@ -130,6 +138,38 @@ const divBox = {
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    flexWrap: 'wrap'
-    
+    flexWrap: 'wrap',
+    marginBottom: '10px'  
+}
+
+const buttonstyle = {
+  width: '15vw',
+  height: '5vh',
+  border: '1px',
+  borderRadius: '5px',
+  backgroundColor: 'blue',
+  color: 'white',
+  cursor: 'pointer',
+}
+
+const buttonstyle2 = {
+  width: '15vw',
+  height: '5vh',
+  border: '1px',
+  borderRadius: '5px',
+  backgroundColor: 'blue',
+  color: 'white',
+  cursor: 'pointer',
+  margin: '10px'
+}
+
+const inputs = {
+  width: '50%',
+  padding: '12px 20px',
+  margin: '8px 0',
+  display: 'flex',
+  flexDirection: 'column',
+  border: '1px solid #ccc',
+  borderRadius: '4px',
+  boxSizing: 'border-box',
 }
