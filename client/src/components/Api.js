@@ -6,12 +6,15 @@ class Api extends React.Component {
    super(props)
    this.state = {
      APIresponse: [],
-     input: {productname: '', price: ''}
+     input: {productname: '', price: ''},
+     selectedProduct: '',
+     hidden: false,  
     }
+
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.deleteProduct = this.deleteProduct.bind(this)
-  
+    this.updateProduct = this.updateProduct.bind(this)
   }
 
 makeReq = (url, method, body) => {
@@ -65,6 +68,19 @@ deleteProduct = (productName) => {
   console.log(productName)
 }
 
+updateProduct = (selectedProduct) => {
+  console.log(selectedProduct)
+    this.setState({
+      selectedProduct: selectedProduct
+    })
+
+    this.setState({
+      hidden: true
+    })
+  
+
+}
+
 async componentDidMount() {
     this.makeReq('http://localhost:3001/api', 'GET')
 }
@@ -84,12 +100,20 @@ async componentDidMount() {
               <button style={buttonstyle} type='submit' onClick={this.handleSubmit}>Add Product</button>
             </div>
 
+              <div style={divBox}>
+              <div style={{ display: (this.state.hidden ? 'flex' : 'none') }}>
+                <input style={inputs} placeholder={this.state.selectedProduct.productname}></input>
+                <input style={inputs} placeholder={this.state.selectedProduct.price}></input>
+                <button style={buttonstyle2}>Update</button>
+              </div>
+              </div>
+
           <div style={divBox}>
             {APIresponse.map(product => (  
               <div style={proCard}>
               <h1> {product.productname} </h1>
               <h3> {product.price} kr </h3>
-              <button style={buttonstyle2} >Update Product</button>
+              <button style={buttonstyle2} onClick={() => this.updateProduct(product)} >Update Product</button>
               <button style={buttonstyle2} onClick={() => this.deleteProduct(product.productname)} >Delete Product</button>
           </div>
             ))}
@@ -117,8 +141,7 @@ const header = {
 const bcol = {
     backgroundColor: 'white',
     width: '100vw', 
-    height: '100%',
-    
+    height: '100%',  
 }
 
 const proCard = {
@@ -128,9 +151,7 @@ const proCard = {
     width: '20vw',
     height: '40vh',
     margin: '10px',
-    color: 'white',
-    
-    
+    color: 'white',  
 }
 
 const divBox = {
