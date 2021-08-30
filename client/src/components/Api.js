@@ -6,10 +6,10 @@ class Api extends React.Component {
    super(props)
    this.state = {
      APIresponse: [],
-     input: {productname: '', price: ''},
+     input: {id: '', productname: '', price: ''},
      selectedProduct: [],
      hidden: false,  
-     updateProduct: {productname: '', price: ''},
+     updateProduct: {id: '', productname: '', price: ''},
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -75,9 +75,9 @@ handleSubmit = (event) =>  {
   event.preventDefault();
 }
 
-deleteProduct = (productName) => {
-  this.makeReq(`http://localhost:3001/api/${productName}`, 'DELETE')
-  console.log(productName)
+deleteProduct = (productId) => {
+  this.makeReq(`http://localhost:3001/api/${productId}`, 'DELETE')
+  console.log(productId)
 }
 
 updateProduct = (selectedProduct) => {
@@ -90,16 +90,16 @@ updateProduct = (selectedProduct) => {
     })
 }
 
-submitUpdate = (selectedProduct) => {
+submitUpdate = (prodId) => {
   if(this.state.updateProduct.productname === '' || this.state.updateProduct.price === '') {
     alert('Product name and price are required to add a product.')
   }
   else {
-    this.makeReq(`http://localhost:3001/api/${selectedProduct}`, 'PUT', this.state.updateProduct)
+    this.makeReq(`http://localhost:3001/api/${prodId}`, 'PUT', this.state.updateProduct)
     this.setState({
       hidden: false
     })
-    console.log(selectedProduct)
+    console.log(prodId)
   }
 }
 
@@ -127,7 +127,7 @@ async componentDidMount() {
               <div style={{ display: (this.state.hidden ? 'flex' : 'none') }}>
                 <input name='productname' style={inputs} placeholder={this.state.selectedProduct.productname} onChange={this.handleChangeOnUpdate}></input>
                 <input name='price' style={inputs} placeholder={this.state.selectedProduct.price} onChange={this.handleChangeOnUpdate}></input>
-                <button style={buttonstyle2} onClick={() => this.submitUpdate(this.state.selectedProduct.productname)} >Update</button>
+                <button style={buttonstyle2} onClick={() => this.submitUpdate(this.state.selectedProduct.id)} >Update</button>
               </div>
               </div>
 
@@ -137,7 +137,7 @@ async componentDidMount() {
               <h1> {product.productname} </h1>
               <h3> {product.price} kr </h3>
               <button style={buttonstyle2} onClick={() => this.updateProduct(product)} >Update Product</button>
-              <button style={buttonstyle2} onClick={() => this.deleteProduct(product.productname)} >Delete Product</button>
+              <button style={buttonstyle2} onClick={() => this.deleteProduct(product.id)} >Delete Product</button>
           </div>
             ))}
         </div>
