@@ -7,8 +7,9 @@ class Api extends React.Component {
    this.state = {
      APIresponse: [],
      input: {productname: '', price: ''},
-     selectedProduct: '',
+     selectedProduct: [],
      hidden: false,  
+     updateProduct: {productname: '', price: ''},
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -52,6 +53,17 @@ handleChange = (event) => {
   console.log(this.state.input)
 }
 
+handleChangeOnUpdate = (event) => {
+  const value = event.target.value;
+  this.setState({
+    updateProduct: {
+      ...this.state.updateProduct,
+      [event.target.name]: value, 
+    } 
+  });
+  console.log(this.state.updateProduct)
+}
+
 handleSubmit = (event) =>  {
   if(this.state.input.productname === '' || this.state.input.price === '') {
     alert('Product name and price are required to add a product.')
@@ -69,7 +81,6 @@ deleteProduct = (productName) => {
 }
 
 updateProduct = (selectedProduct) => {
-  console.log(selectedProduct)
     this.setState({
       selectedProduct: selectedProduct
     })
@@ -77,9 +88,21 @@ updateProduct = (selectedProduct) => {
     this.setState({
       hidden: true
     })
-  
-
 }
+
+submitUpdate = (selectedProduct) => {
+  if(this.state.updateProduct.productname === '' || this.state.updateProduct.price === '') {
+    alert('Product name and price are required to add a product.')
+  }
+  else {
+    this.makeReq(`http://localhost:3001/api/${selectedProduct}`, 'PUT', this.state.updateProduct)
+    this.setState({
+      hidden: false
+    })
+    console.log(selectedProduct)
+  }
+}
+
 
 async componentDidMount() {
     this.makeReq('http://localhost:3001/api', 'GET')
@@ -102,9 +125,9 @@ async componentDidMount() {
 
               <div style={divBox}>
               <div style={{ display: (this.state.hidden ? 'flex' : 'none') }}>
-                <input style={inputs} placeholder={this.state.selectedProduct.productname}></input>
-                <input style={inputs} placeholder={this.state.selectedProduct.price}></input>
-                <button style={buttonstyle2}>Update</button>
+                <input name='productname' style={inputs} placeholder={this.state.selectedProduct.productname} onChange={this.handleChangeOnUpdate}></input>
+                <input name='price' style={inputs} placeholder={this.state.selectedProduct.price} onChange={this.handleChangeOnUpdate}></input>
+                <button style={buttonstyle2} onClick={() => this.submitUpdate(this.state.selectedProduct.productname)} >Update</button>
               </div>
               </div>
 
