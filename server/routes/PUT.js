@@ -8,18 +8,14 @@ router.put('/:prodId', (req, res) =>  {
     
     let Index = products.findIndex(p => p.id === req.params.prodId);
 
-    if(Index) {
-
-        req.body.id = req.params.prodId 
-        let updatedProduct = req.body
-        products.splice(Index, 1, updatedProduct)
-        
-        fs.writeFileSync("products.json", JSON.stringify(products))
-        return res.json(products)
-    }
-       else {
-           return res.status(400).send("Update gone wrong..");
-       }
+    req.body.id = req.params.prodId   
+    products[Index].productname = req.body.productname
+    products[Index].price = req.body.price
+      
+    fs.writeFileSync("products.json", JSON.stringify(products))
+    return res.json(products)
+    
+       
 })
 
 
