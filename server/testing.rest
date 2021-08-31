@@ -1,0 +1,6 @@
+GET  http://localhost:3001/api
+
+POST http://localhost:3001/api
+
+DELETE http://localhost:3001/api/:id  
+

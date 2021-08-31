@@ -10,18 +10,40 @@ class Api extends React.Component {
      selectedProduct: [],
      hidden: false,  
      updateProduct: {id: '', productname: '', price: ''},
+     jokeApiResponse: []
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.deleteProduct = this.deleteProduct.bind(this)
     this.updateProduct = this.updateProduct.bind(this)
-  }
+}
+
+getExternalApi = () => {
+  let headers = new Headers()
+  headers.append('Content-Type', 'application/json')
+  fetch('https://v2.jokeapi.dev/joke/Programming,Miscellaneous,Pun,Spooky,Christmas?blacklistFlags=nsfw,racist,sexist', {
+    headers: headers,
+  })
+  .then(response =>  {
+      const data = response.json()
+      return data  
+  })  
+  .then(data =>  {
+    console.log(data)
+      this.setState({
+          jokeApiResponse: data  
+      })
+  })             
+  
+} 
 
 makeReq = (url, method, body) => {
+  let headers = new Headers()
+  headers.append('Content-Type', 'application/json')
   try {
       const response = fetch(url, {
-          headers: {"Content-Type": "application/json"}, 
+          headers: headers, 
           method,
           body: JSON.stringify(body)
       })
@@ -84,10 +106,15 @@ updateProduct = (selectedProduct) => {
     this.setState({
       selectedProduct: selectedProduct
     })
-
     this.setState({
       hidden: true
     })
+}
+
+closeBtn = () => {
+  this.setState({
+    hidden: false
+  })
 }
 
 submitUpdate = (prodId) => {
@@ -103,19 +130,24 @@ submitUpdate = (prodId) => {
   }
 }
 
-
 async componentDidMount() {
     this.makeReq('http://localhost:3001/api', 'GET')
+    this.getExternalApi() 
 }
-   
+
     render() {
        const {APIresponse} = this.state
+       const {jokeApiResponse} = this.state
 
     return (
         <div style={bcol}>
-          <div style={header}>
-              Node
-          </div>
+    
+          <div style={divBox}>
+              <div style={jokeCard}>
+              <h1> {jokeApiResponse.setup || jokeApiResponse.joke} </h1>
+              <h3> {jokeApiResponse.delivery} </h3>
+              </div>    
+        </div>
 
             <div style={divBox}>
               <input style={inputs} name='productname' type='text' value={this.state.input.productname} onChange={this.handleChange} placeholder='product-name'></input>
@@ -125,8 +157,9 @@ async componentDidMount() {
 
               <div style={divBox}>
               <div style={{ display: (this.state.hidden ? 'flex' : 'none') }}>
-                <input name='productname' style={inputs} placeholder={this.state.selectedProduct.productname} onChange={this.handleChangeOnUpdate}></input>
-                <input name='price' style={inputs} placeholder={this.state.selectedProduct.price} onChange={this.handleChangeOnUpdate}></input>
+              <button onClick={() => this.closeBtn()} style={buttonstyle3}>Close</button>
+                <input name='productname' type='text' style={inputs} placeholder={this.state.selectedProduct.productname} onChange={this.handleChangeOnUpdate}></input>
+                <input name='price' type='number' style={inputs} placeholder={this.state.selectedProduct.price} onChange={this.handleChangeOnUpdate}></input>
                 <button style={buttonstyle2} onClick={() => this.submitUpdate(this.state.selectedProduct.id)} >Update</button>
               </div>
               </div>
@@ -138,7 +171,7 @@ async componentDidMount() {
               <h3> {product.price} kr </h3>
               <button style={buttonstyle2} onClick={() => this.updateProduct(product)} >Update Product</button>
               <button style={buttonstyle2} onClick={() => this.deleteProduct(product.id)} >Delete Product</button>
-          </div>
+              </div>
             ))}
         </div>
       </div>
@@ -186,6 +219,16 @@ const divBox = {
     marginBottom: '10px'  
 }
 
+const jokeCard = {
+  backgroundColor: 'lightblue',
+    border: '1px',
+    borderRadius: '10px',
+    width: '100%',
+    height: '100%',
+    margin: '10px',
+    color: 'white',  
+}
+
 const buttonstyle = {
   width: '15vw',
   height: '5vh',
@@ -198,6 +241,16 @@ const buttonstyle = {
 
 const buttonstyle2 = {
   width: '15vw',
+  height: '5vh',
+  border: '1px',
+  borderRadius: '5px',
+  backgroundColor: 'blue',
+  color: 'white',
+  cursor: 'pointer',
+  margin: '10px'
+}
+const buttonstyle3 = {
+  width: '5vw',
   height: '5vh',
   border: '1px',
   borderRadius: '5px',
