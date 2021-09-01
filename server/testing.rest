@@ -1,10 +1,11 @@
-GET http://localhost:3001/api/
-##
-//Hämta specifik produkt via namn
-//GET http://localhost:3001/api/Kexchoklad
-##
 
-//POST http://localhost:3001/api HTTP/1.1,
+GET http://localhost:3001/api/
+###
+//Hämta specifik produkt via namn
+GET http://localhost:3001/api/Kexchoklad
+###
+
+POST http://localhost:3001/api HTTP/1.1,
 Content-Type: application/json
 
 {
@@ -12,13 +13,13 @@ Content-Type: application/json
     "price": "15"
 } 
 
-##
+###
 // delete är /id
-// DELETE http://localhost:3001/api/09bfed4e-2a53-4498-8193-390f5bed6004 
+DELETE http://localhost:3001/api/09bfed4e-2a53-4498-8193-390f5bed6004 
 
-##
+###
 // put /id på produkt du vill ändra
-// PUT http://localhost:3001/api/3ef62984-d4d5-4d27-91fd-fc5d6e16dc07
+PUT http://localhost:3001/api/3ef62984-d4d5-4d27-91fd-fc5d6e16dc07
 Content-Type: application/json
 
 {
