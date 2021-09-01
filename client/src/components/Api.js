@@ -10,7 +10,8 @@ class Api extends React.Component {
      selectedProduct: [],
      hidden: false,  
      updateProduct: {id: '', productname: '', price: ''},
-     jokeApiResponse: []
+     jokeApiResponse: [],
+     searchProduct: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -73,6 +74,22 @@ handleChange = (event) => {
     } 
   });
   console.log(this.state.input)
+}
+
+handleOnSearch = (evt) => {
+  this.setState({
+    searchProduct: evt.target.value
+  })
+  console.log(evt)
+}
+
+getProductOnSearch = () => {
+  let product = this.state.searchProduct
+  this.makeReq(`http://localhost:3001/api/${product}`, 'GET')
+}
+
+viewAll = () => {
+  this.makeReq('http://localhost:3001/api', 'GET')
 }
 
 handleChangeOnUpdate = (event) => {
@@ -150,6 +167,12 @@ async componentDidMount() {
         </div>
 
             <div style={divBox}>
+              <input style={inputs} onChange={this.handleOnSearch} placeholder='Get product(s) by name'></input> 
+              <button style={buttonstyle} onClick={() => this.getProductOnSearch()} >Search</button>
+              <button style={buttonstyle} onClick={() => this.viewAll()} >View all products</button>
+            </div>
+
+            <div style={divBox}>
               <input style={inputs} name='productname' type='text' value={this.state.input.productname} onChange={this.handleChange} placeholder='product-name'></input>
               <input style={inputs} name='price' type='number' value={this.state.input.price} onChange={this.handleChange} placeholder='price'></input>
               <button style={buttonstyle} type='submit' onClick={this.handleSubmit}>Add Product</button>
@@ -181,18 +204,6 @@ async componentDidMount() {
 }
 
 export default Api;
-
-const header = {
-    width: '100vw', 
-    height: '10vh',
-    backgroundColor: 'lightblue',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    margin: '0',
-    fontSize: '36px'
-}
 
 const bcol = {
     backgroundColor: 'white',
@@ -237,6 +248,7 @@ const buttonstyle = {
   backgroundColor: 'blue',
   color: 'white',
   cursor: 'pointer',
+  margin: '5px'
 }
 
 const buttonstyle2 = {
