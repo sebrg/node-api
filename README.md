@@ -10,7 +10,6 @@ För att starta -> cd server npm start / cd client npm start
 
 Index.js är 'main-filen' för servern där jag hämtar in mina endpoints som finns i mappen routes. 
 Produkterna som läggs upp sparas i en JSON-fil.  
-npm install uuid för att generera id automatiskt till produkterna. 
 
 Externt api är jokeapi som genererar ett random skämt som ligger i headern =D
 
